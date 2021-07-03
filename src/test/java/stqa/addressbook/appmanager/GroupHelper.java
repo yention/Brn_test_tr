@@ -4,10 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import stqa.addressbook.model.GroupData;
 
-public class GroupHelper extends HelperBase{
+public class GroupHelper extends HelperBase {
 
     public GroupHelper(WebDriver wd) {
         super(wd);
+    }
+
+    public void initGroupCreation() {
+        wd.findElement(By.name("new")).click();
     }
 
     public void returnToGroupPage() {
@@ -24,4 +28,27 @@ public class GroupHelper extends HelperBase{
         type(groupData.getFooter(), By.name("group_footer"));
     }
 
+    public void selectFirstGroup() {
+        click(By.name("selected[]"));
+//        select(By.xpath("//input[@value='1']"));
+    }
+
+    public void deleteGroup() {
+        click(By.xpath("//input[@name='delete'][1]"));
+    }
+
+    public void submitUpdatePage() {
+        click(By.name("update"));
+    }
+
+    public void createGroup(GroupData data) {
+        initGroupCreation();
+        fillGroupInfo(data);
+        submitGroupPage();
+        returnToGroupPage();
+    }
+
+    public boolean isThereGroup() {
+        return isElementPresent(By.name("selected[]"));
+    }
 }
