@@ -1,8 +1,10 @@
-package main.java;
 
 public class HelloWorld {
 
     public static void main(String[] args) {
-        System.out.print("Hello world");
+        String[] arr = {"first", "second", "third", "fourth"};
+        for (String l: arr){
+            System.out.println(l);
+        }
     }
 }

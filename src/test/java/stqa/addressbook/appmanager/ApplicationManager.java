@@ -31,7 +31,7 @@ public class ApplicationManager {
             wd = new SafariDriver();
 
         wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        wd.get("http://localhost/addressbook/group.php");
+        wd.get("http://localhost/addressbook");
         groupHelper = new GroupHelper(wd);
         contactHelper = new ContactHelper(wd);
         navigationHelper = new NavigationHelper(wd);
@@ -39,10 +39,6 @@ public class ApplicationManager {
         sessionHelper.login("admin", "secret");
     }
 
-
-    public void initGroupModification() {
-        wd.findElement(By.name("edit")).click();
-    }
 
     public GroupHelper getGroupHelper() {
         return groupHelper;
@@ -55,11 +51,6 @@ public class ApplicationManager {
     public ContactHelper getContactHelper() {
         return contactHelper;
     }
-
-    public void initContactModification() {
-        wd.findElement(By.xpath("//img[@alt='Edit']")).click();
-    }
-
 
     public void stop() {
         wd.quit();

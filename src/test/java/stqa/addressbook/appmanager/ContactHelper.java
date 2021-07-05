@@ -12,6 +12,10 @@ public class ContactHelper extends HelperBase {
         super(wd);
     }
 
+    public void initContactModification() {
+        wd.findElement(By.xpath("//img[@alt='Edit']")).click();
+    }
+
     public void fillContactForm(ContactData cd, Boolean creation) {
         type(cd.getName(), By.name("firstname"));
         type(cd.getMiddleName(), By.name("middlename"));
