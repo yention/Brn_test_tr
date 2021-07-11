@@ -1,10 +1,9 @@
 package stqa.addressbook.appmanager;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HelperBase {
     protected WebDriver wd;
@@ -54,5 +53,12 @@ public class HelperBase {
     public void select(By locator) {
         new Select(wd.findElement(locator));
 
+    }
+
+    protected void acceptAlert() {
+        WebDriverWait wait = new WebDriverWait(wd, 3000);
+        wait.until(ExpectedConditions.alertIsPresent());
+        Alert alert = wd.switchTo().alert();
+        alert.accept();
     }
 }

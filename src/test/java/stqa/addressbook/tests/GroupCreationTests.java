@@ -1,27 +1,33 @@
 package stqa.addressbook.tests;
 
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.Test;
 import stqa.addressbook.model.GroupData;
 
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
 
 public class GroupCreationTests extends TestBase {
 
     @Test
     public void testGroupCreation() throws Exception {
-        app.getNavigationHelper().goToGroupPage();
-        List<GroupData> before = app.getGroupHelper().getGroupCount();
-        GroupData group = new GroupData("test1", null, null);
-        app.getGroupHelper().createGroup(group);
-        List<GroupData> after = app.getGroupHelper().getGroupCount();
-        Assert.assertEquals(after.size(), before.size()+1);
+        app.goTo().groupPage();
 
-//        int max = after.stream().max((o1,o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
-        group.setId(after.stream().max((o1,o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
+        List<GroupData> before = app.group().list();
+        GroupData group = new GroupData().withName("test 2");
+
+        app.group().create(group);
+
+        List<GroupData> after = app.group().list();
+
+        Assert.assertEquals(after.size(), before.size() + 1);
+
         before.add(group);
-        Assert.assertEquals(new HashSet<>(before), new HashSet<>(after));
+        Comparator<? super GroupData> byId = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
+        after.sort(byId);
+        before.sort(byId);
+
+        Assert.assertEquals(before, after);
     }
 
 

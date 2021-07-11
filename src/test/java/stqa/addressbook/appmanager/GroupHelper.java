@@ -26,17 +26,17 @@ public class GroupHelper extends HelperBase {
         click(By.linkText("group page"));
     }
 
-    public void submitGroupPage() {
+    public void submit() {
         click(By.name("submit"));
     }
 
-    public void fillGroupInfo(GroupData groupData) {
+    public void fillForm(GroupData groupData) {
         type(groupData.getName(), By.name("group_name"));
         type(groupData.getHeader(), By.name("group_header"));
         type(groupData.getFooter(), By.name("group_footer"));
     }
 
-    public void selectGroup(int index) {
+    public void select(int index) {
         wd.findElements(By.name("selected[]")).get(index).click();
     }
 
@@ -44,30 +44,40 @@ public class GroupHelper extends HelperBase {
         click(By.xpath("//input[@name='delete'][1]"));
     }
 
-    public void submitUpdatePage() {
+    public void update() {
         click(By.name("update"));
     }
 
-    public void createGroup(GroupData data) {
+    public void create(GroupData data) {
         initGroupCreation();
-        fillGroupInfo(data);
-        submitGroupPage();
+        fillForm(data);
+        submit();
         returnToGroupPage();
     }
 
-    public boolean isThereGroup() {
-        return isElementPresent(By.name("selected[]"));
-    }
-
-    public List<GroupData> getGroupCount() {
+    public List<GroupData> list() {
         List<GroupData> groups = new ArrayList<GroupData>();
         List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : elements) {
             String name = element.getText();
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            GroupData groupData = new GroupData(id, name, null, null);
+            GroupData groupData = new GroupData().withId(id).withName(name);
             groups.add(groupData);
         }
         return groups;
+    }
+
+    public void modificate(int index, GroupData newGroup) {
+        select(index);
+        initGroupModification();
+        fillForm(newGroup);
+        update();
+        returnToGroupPage();
+    }
+
+    public void delete(int index) {
+        select(index);
+        deleteGroup();
+        returnToGroupPage();
     }
 }
