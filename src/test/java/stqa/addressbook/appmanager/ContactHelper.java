@@ -6,9 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import stqa.addressbook.model.ContactData;
+import stqa.addressbook.model.Contacts;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -24,7 +27,7 @@ public class ContactHelper extends HelperBase {
         wd.findElement(By.xpath("//a[normalize-space()='add new']")).click();
     }
 
-    public void fillContactForm(ContactData cd, Boolean creation) {
+    public void fillForm(ContactData cd, Boolean creation) {
         type(cd.getName(), By.name("firstname"));
         type(cd.getMiddleName(), By.name("middlename"));
         type(cd.getLastName(), By.name("lastname"));
@@ -48,26 +51,24 @@ public class ContactHelper extends HelperBase {
     }
 
     public void update() {
-        click((By.name("update")));
+        click((By.cssSelector("input[name=\"update\"]")));
     }
 
-    public List<ContactData> getContactCount() {
-        List<ContactData> contacts = new ArrayList<ContactData>();
+    public Contacts all() {
+        Contacts contacts = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             String name = element.getText();
             int id = Integer.parseInt(element.findElement(By.name("selected[]")).getAttribute("value"));
-            ContactData contactData = new ContactData(id, name, null, null, null);
+            ContactData contactData = new ContactData().
+                    withId(id).
+                    withName(name);
             contacts.add(contactData);
         }
         return contacts;
     }
 
-    public boolean isThereContact() {
-        return isElementPresent(By.name("selected[]"));
-    }
-
-    public void selectContact(int i) {
+    public void select(int i) {
         wd.findElements(By.name("selected[]")).get(i).click();
     }
 
@@ -78,16 +79,27 @@ public class ContactHelper extends HelperBase {
 
     public void creationContact(ContactData contactData, boolean creation) throws InterruptedException {
         initContactCreation();
-        fillContactForm(contactData, creation);
+        fillForm(contactData, creation);
         submit();
         returnToHomePage();
     }
 
-    public void modificationContact(int index, ContactData modifContact, boolean creation) {
-        selectContact(index);
+    public void modify(ContactData modifContact) {
+        selectContactById(modifContact.getId());
         initContactModification();
-        fillContactForm(modifContact, creation);
+        fillForm(modifContact, false);
         update();
         returnToHomePage();
+    }
+
+    public void delete(ContactData deletedContact) {
+        selectContactById(deletedContact.getId());
+        deleteContact();
+        returnToHomePage();
+    }
+
+    private void selectContactById(int indx) {
+        wd.findElement(By.cssSelector("input[value = '" + indx + "'")).click();
+
     }
 }

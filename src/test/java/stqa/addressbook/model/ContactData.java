@@ -4,27 +4,12 @@ import java.util.Objects;
 
 public class ContactData {
 
-    private final String name;
-    private final String middleName;
-    private final String lastName;
-    private final String group;
-    private int id;
+    private String name;
+    private String middleName;
+    private String lastName;
+    private String group;
+    private int id = Integer.MAX_VALUE;
 
-    public ContactData(String name, String middleName, String lastName, String group) {
-        this.id = Integer.MAX_VALUE;
-        this.name = name;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.group = group;
-    }
-
-    public ContactData(int id,String name, String middleName, String lastName, String group) {
-        this.id = id;
-        this.name = name;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.group = group;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -36,16 +21,7 @@ public class ContactData {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getLastName());
-    }
-
-    @Override
-    public String toString() {
-        return "ContactData{" +
-                "name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", id=" + id +
-                '}';
+        return Objects.hash(getName(), getLastName(), getId());
     }
 
     public String getName() {
@@ -68,7 +44,28 @@ public class ContactData {
         return id;
     }
 
-    public void setId(int id) {
+    public ContactData withId(int id) {
         this.id = id;
+        return this;
+    }
+
+    public ContactData withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public ContactData withMiddleName(String middleName) {
+        this.middleName = middleName;
+        return this;
+    }
+
+    public ContactData withLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public ContactData withGroup(String group) {
+        this.group = group;
+        return this;
     }
 }
