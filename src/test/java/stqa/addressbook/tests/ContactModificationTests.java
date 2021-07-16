@@ -1,6 +1,5 @@
 package stqa.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import stqa.addressbook.model.ContactData;
@@ -18,7 +17,7 @@ public class ContactModificationTests extends TestBase {
                     withName("Alex").
                     withMiddleName("MName").
                     withGroup("Test1");
-            app.contact().creationContact(newContact, true);
+            app.contact().modification(newContact);
         }
     }
 
@@ -31,7 +30,7 @@ public class ContactModificationTests extends TestBase {
                 withId(modifiedContact.getId()).
                 withName("Name").
                 withMiddleName("Middle Name");
-        app.contact().modify(contact);
+        app.contact().modification(contact);
         Contacts after = app.contact().all();
 
         assertThat(after, equalTo(before));

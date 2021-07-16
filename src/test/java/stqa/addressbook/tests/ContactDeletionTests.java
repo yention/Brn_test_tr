@@ -1,13 +1,9 @@
 package stqa.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import stqa.addressbook.model.ContactData;
 import stqa.addressbook.model.Contacts;
-
-import java.util.List;
-import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -18,7 +14,7 @@ public class ContactDeletionTests extends TestBase {
     private void ensurePreconditions() throws InterruptedException {
         if (app.contact().all().size() == 0) {
             ContactData newContact = new ContactData().withName("Alexis").withMiddleName("Middle Name").withGroup("Test 1");
-            app.contact().creationContact(newContact, true);
+            app.contact().creation(newContact);
         }
     }
 

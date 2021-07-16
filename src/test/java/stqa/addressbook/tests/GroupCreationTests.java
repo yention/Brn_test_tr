@@ -3,32 +3,32 @@ package stqa.addressbook.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import stqa.addressbook.model.GroupData;
+import stqa.addressbook.model.Groups;
 
 import java.util.Comparator;
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class GroupCreationTests extends TestBase {
 
     @Test
     public void testGroupCreation() throws Exception {
         app.goTo().groupPage();
-
-        List<GroupData> before = app.group().list();
-        GroupData group = new GroupData().withName("test 2");
+        Groups before = app.group().all();
+        GroupData group = new GroupData().
+                withName("test 2").
+                withFooter("FOOTER").
+                withHeader("HEADER");
 
         app.group().create(group);
-
-        List<GroupData> after = app.group().list();
-
-        Assert.assertEquals(after.size(), before.size() + 1);
-
-        before.add(group);
-        Comparator<? super GroupData> byId = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
-        after.sort(byId);
-        before.sort(byId);
-
-        Assert.assertEquals(before, after);
+        assertThat(app.group().count(), equalTo(before.size()));
+        Groups after = app.group().all();
+        assertThat(after.size(), equalTo(before.size()+1));
+        assertThat(after, equalTo(
+                before.withAdded(group.withId(after.stream().mapToInt((c)
+                        -> c.getId()).max().getAsInt()))));
     }
-
 
 }

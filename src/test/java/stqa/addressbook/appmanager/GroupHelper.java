@@ -4,13 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import stqa.addressbook.model.GroupData;
+import stqa.addressbook.model.Groups;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class GroupHelper extends HelperBase {
+
+    private Groups groupsCash = null;
 
     public GroupHelper(WebDriver wd) {
         super(wd);
@@ -57,40 +59,35 @@ public class GroupHelper extends HelperBase {
         returnToGroupPage();
     }
 
-    public List<GroupData> list() {
-        List<GroupData> groups = new ArrayList<GroupData>();
+    public int count(){
+        return wd.findElements(By.name("selected[]")).size();
+    }
+
+    public Groups all() {
+        if (groupsCash != null){
+            return new Groups(groupsCash);
+        }
+        groupsCash = new Groups();
         List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : elements) {
             String name = element.getText();
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
             GroupData groupData = new GroupData().withId(id).withName(name);
-            groups.add(groupData);
+            groupsCash.add(groupData);
         }
-        return groups;
+        return groupsCash;
     }
 
-    public Set<GroupData> all() {
-        Set<GroupData> groups = new HashSet<>();
-        List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
-        for (WebElement element : elements) {
-            String name = element.getText();
-            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            GroupData groupData = new GroupData().withId(id).withName(name);
-            groups.add(groupData);
-        }
-        return groups;
-    }
-
-    public void modificate(int index, GroupData newGroup) {
-        select(index);
+    public void modificate(GroupData newGroup) {
+        select(newGroup.getId());
         initGroupModification();
         fillForm(newGroup);
         update();
         returnToGroupPage();
     }
 
-    public void delete(int index) {
-        select(index);
+    public void delete(GroupData groupData) {
+        select(groupData.getId());
         deleteGroup();
         returnToGroupPage();
     }

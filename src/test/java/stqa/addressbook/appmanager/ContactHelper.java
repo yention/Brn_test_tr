@@ -8,12 +8,11 @@ import org.testng.Assert;
 import stqa.addressbook.model.ContactData;
 import stqa.addressbook.model.Contacts;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ContactHelper extends HelperBase {
+
+    private Contacts contactCash = null;
 
     public ContactHelper(WebDriver wd) {
         super(wd);
@@ -28,6 +27,7 @@ public class ContactHelper extends HelperBase {
     }
 
     public void fillForm(ContactData cd, Boolean creation) {
+
         type(cd.getName(), By.name("firstname"));
         type(cd.getMiddleName(), By.name("middlename"));
         type(cd.getLastName(), By.name("lastname"));
@@ -54,8 +54,15 @@ public class ContactHelper extends HelperBase {
         click((By.cssSelector("input[name=\"update\"]")));
     }
 
+    public int count() {
+        return wd.findElements(By.name("entry")).size();
+    }
+
     public Contacts all() {
-        Contacts contacts = new Contacts();
+        if (contactCash != null) {
+            return new Contacts(contactCash);
+        }
+        contactCash = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             String name = element.getText();
@@ -63,9 +70,9 @@ public class ContactHelper extends HelperBase {
             ContactData contactData = new ContactData().
                     withId(id).
                     withName(name);
-            contacts.add(contactData);
+            contactCash.add(contactData);
         }
-        return contacts;
+        return contactCash;
     }
 
     public void select(int i) {
@@ -77,29 +84,53 @@ public class ContactHelper extends HelperBase {
         acceptAlert();
     }
 
-    public void creationContact(ContactData contactData, boolean creation) throws InterruptedException {
+    public void creation(ContactData contactData) throws InterruptedException {
         initContactCreation();
-        fillForm(contactData, creation);
+        fillForm(contactData, false);
         submit();
-        returnToHomePage();
-    }
-
-    public void modify(ContactData modifContact) {
-        selectContactById(modifContact.getId());
-        initContactModification();
-        fillForm(modifContact, false);
-        update();
+        contactCash = null;
         returnToHomePage();
     }
 
     public void delete(ContactData deletedContact) {
         selectContactById(deletedContact.getId());
         deleteContact();
+        contactCash = null;
+        returnToHomePage();
+    }
+
+    public void modification(ContactData newContact) {
+        initContactCreation();
+        fillForm(newContact, false);
+        submit();
+        contactCash = null;
         returnToHomePage();
     }
 
     private void selectContactById(int indx) {
         wd.findElement(By.cssSelector("input[value = '" + indx + "'")).click();
+    }
 
+    public ContactData infoFromEditForm(ContactData contact) {
+        initContactModificationById(contact.getId());
+        String firstName = wd.findElement(By.name("firstname")).getAttribute("value");
+        String lastName = wd.findElement(By.name("lastname")).getAttribute("value");
+        String middleName = wd.findElement(By.name("middlename")).getAttribute("value");
+        String phoneHome = wd.findElement(By.name("home")).getAttribute("value");
+        String phoneMobile = wd.findElement(By.name("mobile")).getAttribute("value");
+        String phoneWork = wd.findElement(By.name("mobile")).getAttribute("value");
+        wd.navigate().back();
+        return new ContactData().
+                withId(contact.getId()).
+                withName(firstName).
+                withLastName(lastName).
+                withMiddleName(middleName).
+                withPhoneHome(phoneHome).
+                withPhoneMobile(phoneMobile).
+                withPhoneWork(phoneWork);
+    }
+
+    private void initContactModificationById(int id) {
+        wd.findElement(By.cssSelector(String.format("a[href=\"edit.php?id=%s\"]", id))).click();
     }
 }
