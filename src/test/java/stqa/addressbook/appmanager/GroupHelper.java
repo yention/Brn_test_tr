@@ -6,13 +6,11 @@ import org.openqa.selenium.WebElement;
 import stqa.addressbook.model.GroupData;
 import stqa.addressbook.model.Groups;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class GroupHelper extends HelperBase {
 
-    private Groups groupsCash = null;
+    private Groups groupsCache = null;
 
     public GroupHelper(WebDriver wd) {
         super(wd);
@@ -64,18 +62,17 @@ public class GroupHelper extends HelperBase {
     }
 
     public Groups all() {
-        if (groupsCash != null){
-            return new Groups(groupsCash);
+        if (groupsCache != null) {
+            return new Groups(groupsCache);
         }
-        groupsCash = new Groups();
+        groupsCache = new Groups();
         List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : elements) {
             String name = element.getText();
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            GroupData groupData = new GroupData().withId(id).withName(name);
-            groupsCash.add(groupData);
+            groupsCache.add(new GroupData().withId(id).withName(name));
         }
-        return groupsCash;
+        return new Groups(groupsCache);
     }
 
     public void modificate(GroupData newGroup) {

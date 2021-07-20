@@ -13,7 +13,10 @@ public class ContactDeletionTests extends TestBase {
     @BeforeMethod
     private void ensurePreconditions() throws InterruptedException {
         if (app.contact().all().size() == 0) {
-            ContactData newContact = new ContactData().withName("Alexis").withMiddleName("Middle Name").withGroup("Test 1");
+            ContactData newContact = new ContactData().
+                    withName("Alexis").
+                    withMiddleName("Middle Name").
+                    withGroup("Test 1");
             app.contact().creation(newContact);
         }
     }
@@ -27,7 +30,7 @@ public class ContactDeletionTests extends TestBase {
         Contacts after = app.contact().all();
 
         assertThat(after.size(), equalTo(before.size() -1));
-        assertThat(after, equalTo(before.withAdded(deletedContact)));
+        assertThat(after, equalTo(before.without(deletedContact)));
     }
 
 

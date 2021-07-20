@@ -17,11 +17,12 @@ public class GroupModificationTests extends TestBase {
     @BeforeMethod
     public void ensurePrecondition() {
         if (app.group().all().size() == 0) {
+            app.goTo().groupPage();
             app.group().create(
                     new GroupData().
-                            withName("Edited name").
-                            withHeader("Edited header").
-                            withFooter("Edited Footer")
+                            withName("Precondition name").
+                            withHeader("Precondition header").
+                            withFooter("Precondition Footer")
             );
         }
     }

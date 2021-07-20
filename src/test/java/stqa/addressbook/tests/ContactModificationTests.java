@@ -13,6 +13,7 @@ public class ContactModificationTests extends TestBase {
     @BeforeMethod
     private void ensurePreconditions() throws InterruptedException {
         if (app.contact().all().size() == 0) {
+            app.goTo().homePage();
             ContactData newContact = new ContactData().
                     withName("Alex").
                     withMiddleName("MName").
@@ -33,8 +34,8 @@ public class ContactModificationTests extends TestBase {
         app.contact().modification(contact);
         Contacts after = app.contact().all();
 
-        assertThat(after, equalTo(before));
-        assertThat(after, equalTo(before.without(modifiedContact).add(contact)));
+        assertThat(after.size(), equalTo(before.size()));
+        assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
     }
 
 

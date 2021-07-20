@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
-    private Contacts contactCash = null;
+    private Contacts contactCache = null;
 
     public ContactHelper(WebDriver wd) {
         super(wd);
@@ -59,10 +59,10 @@ public class ContactHelper extends HelperBase {
     }
 
     public Contacts all() {
-        if (contactCash != null) {
-            return new Contacts(contactCash);
+        if (contactCache != null) {
+            return new Contacts(contactCache);
         }
-        contactCash = new Contacts();
+        contactCache = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             String name = element.getText();
@@ -70,9 +70,9 @@ public class ContactHelper extends HelperBase {
             ContactData contactData = new ContactData().
                     withId(id).
                     withName(name);
-            contactCash.add(contactData);
+            contactCache.add(contactData);
         }
-        return contactCash;
+        return contactCache;
     }
 
     public void select(int i) {
@@ -86,24 +86,24 @@ public class ContactHelper extends HelperBase {
 
     public void creation(ContactData contactData) throws InterruptedException {
         initContactCreation();
-        fillForm(contactData, false);
+        fillForm(contactData, true);
         submit();
-        contactCash = null;
+        contactCache = null;
         returnToHomePage();
     }
 
     public void delete(ContactData deletedContact) {
         selectContactById(deletedContact.getId());
         deleteContact();
-        contactCash = null;
+        contactCache = null;
         returnToHomePage();
     }
 
     public void modification(ContactData newContact) {
-        initContactCreation();
+        initContactModification();
         fillForm(newContact, false);
-        submit();
-        contactCash = null;
+        update();
+        contactCache = null;
         returnToHomePage();
     }
 
