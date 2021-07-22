@@ -16,13 +16,13 @@ public class ContactCreationTests extends TestBase {
         Contacts before = app.contact().all();
         ContactData newContact = new ContactData().
                 withName("Alex").
-                withMiddleName("Midy").
+                withMiddleName("Midy");
 //                withLastName("Yenz").
-                withGroup("test1");
+//                withGroup("test1");
         app.contact().creation(newContact);
         assertThat(app.contact().count(), equalTo(before.size() + 1));
         Contacts after = app.contact().all();
-        assertThat(after.size(), equalTo(before.size() + 1));
+        assertThat(app.contact().count(), equalTo(before.size() + 1));
         assertThat(after, equalTo(
                 before.withAdded(newContact.withId(after.stream().mapToInt((c)
                         -> c.getId()).max().getAsInt()))));

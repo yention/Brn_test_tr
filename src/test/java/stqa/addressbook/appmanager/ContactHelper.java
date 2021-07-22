@@ -27,19 +27,28 @@ public class ContactHelper extends HelperBase {
     }
 
     public void fillForm(ContactData cd, Boolean creation) {
-
         type(cd.getName(), By.name("firstname"));
         type(cd.getMiddleName(), By.name("middlename"));
         type(cd.getLastName(), By.name("lastname"));
+        System.out.println("!!!" + listGroups());
         if (creation) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(cd.getGroup());
+            new Select (wd.findElement(By.name("new_group"))).selectByVisibleText(listGroups().iterator().next().getText());
+//            new Select(wd.findElement(By.name("new_group"))).
+//                    selectByVisibleText(cd.getGroup());
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
 
-        if (isElementPresent(By.name("new_group"))) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(cd.getGroup());
+//        if (isElementPresent(By.name("new_group"))) {
+//            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(cd.getGroup());
+//        }
+    }
+
+    private List<WebElement> listGroups(){
+        if (isElementPresent(By.name("new_group"))){
+            return wd.findElements(By.cssSelector("[name = \"new_group\"] option"));
         }
+        return null;
     }
 
     public void submit() {
