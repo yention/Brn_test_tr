@@ -63,12 +63,28 @@ public class GroupHelper extends HelperBase {
         List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : elements) {
             String name = element.getText();
-            int id = Integer.parseInt(element.findElement(By.tagName("selected[]")).getAttribute("value"));
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
             //GroupData group = new GroupData().withId(id).withName(name);
             groupsCache.add(new GroupData().withId(id).withName(name));
         }
         return new Groups(groupsCache);
     }
+//    честно говоря, у меня вообще не доходит до этого места, падает раньше, вот на этой строке
+//    int id = Integer.parseInt(element.findElement(By.tagName("selected[]")).getAttribute("value"));
+//    потому что должно быть By.name
+//
+//
+//    а количество не сходится потому, что мы собираем группы в множество (а не в список),
+//    это неупорядоченная коллекция, в которой все элементы различны. когда в множество
+//    добавляется элемент, равный элементу, уже содержащемуся в множестве -- он не добавляется
+//    (потому что "такой уже есть"). смотрим функцию сравнения в классе GroupData -- она при сравнении
+//    учитывает только название группы. следовательно, если у вас есть несколько групп с одинаковыми названиями --
+//    в множестве все они будут представлены в виде одного элемента
+//      рекомендую идентификаторы учитывать при сравнении
+
+
+
+
 
     public void modificate(GroupData newGroup) {
         select(newGroup.getId());
