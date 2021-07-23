@@ -74,11 +74,18 @@ public class ContactHelper extends HelperBase {
         contactCache = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
-            String name = element.getText();
+            List <WebElement> cells = element.findElements(By.tagName("td"));
             int id = Integer.parseInt(element.findElement(By.name("selected[]")).getAttribute("value"));
+            String name = cells.get(2).getText();
+            String lastName = cells.get(1).getText();
+            String[] allPhones = cells.get(5).getText().split("\n");
+            System.out.println("11111" + allPhones[0] + allPhones[1] + allPhones[2]);
             ContactData contactData = new ContactData().
                     withId(id).
-                    withName(name);
+                    withName(name).
+                    withPhoneHome(allPhones[0]).
+                    withPhoneMobile(allPhones[1]).
+                    withPhoneWork(allPhones[2]);
             contactCache.add(contactData);
         }
         return contactCache;
@@ -127,7 +134,7 @@ public class ContactHelper extends HelperBase {
         String middleName = wd.findElement(By.name("middlename")).getAttribute("value");
         String phoneHome = wd.findElement(By.name("home")).getAttribute("value");
         String phoneMobile = wd.findElement(By.name("mobile")).getAttribute("value");
-        String phoneWork = wd.findElement(By.name("mobile")).getAttribute("value");
+        String phoneWork = wd.findElement(By.name("work")).getAttribute("value");
         wd.navigate().back();
         return new ContactData().
                 withId(contact.getId()).
