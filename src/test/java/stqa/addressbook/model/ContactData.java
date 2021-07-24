@@ -11,6 +11,13 @@ public class ContactData {
     private String phoneHome;
     private String phoneMobile;
     private String phoneWork;
+    private String allPhones;
+    private String address;
+    private String email1;
+    private String email2;
+    private String email3;
+    private String allEmails;
+
 
     private int id = Integer.MAX_VALUE;
 
@@ -26,6 +33,51 @@ public class ContactData {
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getLastName(), getId());
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public ContactData withAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public String getEmail1() {
+        return email1;
+    }
+
+    public ContactData withEmail1(String email1) {
+        this.email1 = email1;
+        return this;
+    }
+
+    public String getEmail2() {
+        return email2;
+    }
+
+    public ContactData withEmail2(String email2) {
+        this.email2 = email2;
+        return this;
+    }
+
+    public String getEmail3() {
+        return email3;
+    }
+
+    public ContactData withEmail3(String email3) {
+        this.email3 = email3;
+        return this;
+    }
+
+    public String getAllEmails() {
+        return allEmails;
+    }
+
+    public ContactData withAllEmails(String allEmails) {
+        this.allEmails = allEmails;
+        return this;
     }
 
     public String getName() {
@@ -58,6 +110,10 @@ public class ContactData {
 
     public int getId() {
         return id;
+    }
+
+    public String getAllPhones() {
+        return allPhones;
     }
 
     public ContactData withId(int id) {
@@ -97,6 +153,11 @@ public class ContactData {
 
     public ContactData withPhoneWork(String phoneWork) {
         this.phoneWork = phoneWork;
+        return this;
+    }
+
+    public ContactData withAllPhones(String allPhones) {
+        this.allPhones = allPhones;
         return this;
     }
 }

@@ -13,6 +13,10 @@ public class TestBase {
     // for time optimization -> one running browser for all tests in Suit(~Case)
     protected static final ApplicationManager app = new ApplicationManager(BrowserType.CHROME);
 
+    public static String cleaned(String st){
+        return st.replaceAll("\\s", "").replaceAll("[-()]", "");
+    }
+
     @BeforeSuite(alwaysRun = true)
     public void setUp() throws Exception {
         app.init();
