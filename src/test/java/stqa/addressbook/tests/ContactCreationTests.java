@@ -5,18 +5,22 @@ import org.testng.annotations.Test;
 import stqa.addressbook.model.ContactData;
 import stqa.addressbook.model.Contacts;
 
+import java.io.File;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
 public class ContactCreationTests extends TestBase {
 
-    @Test()
+    @Test
     public void testContactCreation() throws Exception {
         app.goTo().homePage();
         Contacts before = app.contact().all();
+        File photo = new File("/Applications/Projects/Brn_test_tr/files/jesus.jpeg");
         ContactData newContact = new ContactData().
                 withName("Alex").
-                withMiddleName("Midy");
+                withMiddleName("Midy").
+                withPhoto(photo);
 //                withLastName("Yenz").
 //                withGroup("test1");
         app.contact().creation(newContact);
@@ -29,7 +33,9 @@ public class ContactCreationTests extends TestBase {
 
     }
 
-    @Test()
+
+
+    @Test(enabled = false)
     public void testBadContactCreation() throws Exception {
         app.goTo().homePage();
         Contacts before = app.contact().all();

@@ -17,6 +17,15 @@ public class GroupData {
     }
 
     @Override
+    public String toString() {
+        return "GroupData{" +
+                "name='" + name + '\'' +
+                ", header='" + header + '\'' +
+                ", footer='" + footer + '\'' +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(name);
     }

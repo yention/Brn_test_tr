@@ -30,7 +30,7 @@ public class ContactHelper extends HelperBase {
         type(cd.getName(), By.name("firstname"));
         type(cd.getMiddleName(), By.name("middlename"));
         type(cd.getLastName(), By.name("lastname"));
-        System.out.println("!!!" + listGroups());
+        attach(cd.getPhoto(), By.name("photo"));
         if (creation) {
             new Select (wd.findElement(By.name("new_group"))).selectByVisibleText(listGroups().iterator().next().getText());
 //            new Select(wd.findElement(By.name("new_group"))).

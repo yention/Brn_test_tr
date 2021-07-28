@@ -1,5 +1,6 @@
 package stqa.addressbook.model;
 
+import java.io.File;
 import java.util.Objects;
 
 public class ContactData {
@@ -20,6 +21,7 @@ public class ContactData {
 
 
     private int id = Integer.MAX_VALUE;
+    private File photo;
 
 
     @Override
@@ -42,6 +44,10 @@ public class ContactData {
     public ContactData withAddress(String address) {
         this.address = address;
         return this;
+    }
+
+    public File getPhoto(){
+        return photo;
     }
 
     public String getEmail1() {
@@ -158,6 +164,11 @@ public class ContactData {
 
     public ContactData withAllPhones(String allPhones) {
         this.allPhones = allPhones;
+        return this;
+    }
+
+    public ContactData withPhoto(File photo) {
+        this.photo = photo;
         return this;
     }
 }
