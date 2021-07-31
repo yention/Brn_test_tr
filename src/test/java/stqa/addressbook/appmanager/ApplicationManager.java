@@ -6,22 +6,32 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.safari.SafariDriver;
 
+import javax.xml.parsers.SAXParser;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
+
+    public Properties properties;
+    protected WebDriver wd;
     private String browser;
     private NavigationHelper navigationHelper;
     private GroupHelper groupHelper;
     private SessionHelper sessionHelper;
     private ContactHelper contactHelper;
 
-    protected WebDriver wd;
-
     public ApplicationManager(String browser) {
         this.browser = browser;
+        properties = new Properties();
     }
 
-    public void init() {
+    public void init() throws IOException {
+        String target = System.getProperty("target", "local");
+        properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
+
         if (browser == BrowserType.CHROME)
             wd = new ChromeDriver();
         else if (browser == BrowserType.FIREFOX)
@@ -30,12 +40,12 @@ public class ApplicationManager {
             wd = new SafariDriver();
 
         wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        wd.get("http://localhost/addressbook");
+        wd.get(properties.getProperty("web.baseURL"));
         groupHelper = new GroupHelper(wd);
         contactHelper = new ContactHelper(wd);
         navigationHelper = new NavigationHelper(wd);
         sessionHelper = new SessionHelper(wd);
-        sessionHelper.login("admin", "secret");
+        sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
     }
 
     public GroupHelper group() {
@@ -54,4 +64,7 @@ public class ApplicationManager {
         wd.quit();
     }
 
+    public Properties getProperties() {
+        return properties;
+    }
 }

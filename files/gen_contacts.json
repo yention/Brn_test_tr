@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Test 0",
+    "address": "Main st 000",
+    "email1": "Email0@email.com"
+  },
+  {
+    "name": "Test 1",
+    "address": "Main st 111",
+    "email1": "Email1@email.com"
+  },
+  {
+    "name": "Test 2",
+    "address": "Main st 222",
+    "email1": "Email2@email.com"
+  }
+]

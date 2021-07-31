@@ -1,10 +1,14 @@
 package stqa.addressbook.model;
 
+import com.google.gson.annotations.Expose;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 import java.io.File;
 import java.util.Objects;
 
 public class ContactData {
 
+    @Expose
     private String name;
     private String middleName;
     private String lastName;
@@ -13,13 +17,15 @@ public class ContactData {
     private String phoneMobile;
     private String phoneWork;
     private String allPhones;
+    @Expose
     private String address;
+    @Expose
     private String email1;
     private String email2;
     private String email3;
     private String allEmails;
 
-
+    @XStreamOmitField
     private int id = Integer.MAX_VALUE;
     private File photo;
 
