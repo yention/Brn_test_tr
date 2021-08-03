@@ -2,32 +2,60 @@ package stqa.addressbook.model;
 
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.io.File;
 import java.util.Objects;
 
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
 
     @Expose
+    @Column(name = "firstname")
     private String name;
+    @Column(name = "middlename")
     private String middleName;
+    @Column(name = "lastname")
     private String lastName;
+    @Transient
     private String group;
+    @Column(name = "home")
+    @Type(type = "text")
     private String phoneHome;
+    @Type(type = "text")
+    @Column(name = "mobile")
     private String phoneMobile;
+    @Type(type = "text")
+    @Column(name = "work")
     private String phoneWork;
+    @Transient
     private String allPhones;
     @Expose
+    @Column(name = "address")
+    @Type(type = "text")
     private String address;
     @Expose
+    @Column(name = "email")
+    @Type(type = "text")
     private String email1;
+    @Type(type = "text")
+    @Column(name = "email2")
     private String email2;
+    @Type(type = "text")
+    @Column(name = "email3")
     private String email3;
+    @Transient
     private String allEmails;
 
     @XStreamOmitField
+    @Id
+    @Column(name = "id")
     private int id = Integer.MAX_VALUE;
-    private File photo;
+    @Column(name = "photo")
+    @Type(type = "text")
+    private String photo;
 
 
     @Override
@@ -43,6 +71,16 @@ public class ContactData {
         return Objects.hash(getName(), getLastName(), getId());
     }
 
+    @Override
+    public String toString() {
+        return "ContactData{" +
+                "name='" + name + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", phoneHome='" + phoneHome + '\'' +
+                ", id=" + id +
+                '}';
+    }
+
     public String getAddress() {
         return address;
     }
@@ -53,7 +91,7 @@ public class ContactData {
     }
 
     public File getPhoto(){
-        return photo;
+        return new File(photo);
     }
 
     public String getEmail1() {
@@ -174,7 +212,7 @@ public class ContactData {
     }
 
     public ContactData withPhoto(File photo) {
-        this.photo = photo;
+        this.photo = photo.getPath();
         return this;
     }
 }
