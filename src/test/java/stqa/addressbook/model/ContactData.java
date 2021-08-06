@@ -12,6 +12,11 @@ import java.util.Objects;
 @Table(name = "addressbook")
 public class ContactData {
 
+
+    @XStreamOmitField
+    @Id
+    @Column(name = "id")
+    private int id = Integer.MAX_VALUE;
     @Expose
     @Column(name = "firstname")
     private String name;
@@ -49,10 +54,6 @@ public class ContactData {
     @Transient
     private String allEmails;
 
-    @XStreamOmitField
-    @Id
-    @Column(name = "id")
-    private int id = Integer.MAX_VALUE;
     @Column(name = "photo")
     @Type(type = "text")
     private String photo;
@@ -74,10 +75,20 @@ public class ContactData {
     @Override
     public String toString() {
         return "ContactData{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", group='" + group + '\'' +
                 ", phoneHome='" + phoneHome + '\'' +
-                ", id=" + id +
+                ", phoneMobile='" + phoneMobile + '\'' +
+                ", phoneWork='" + phoneWork + '\'' +
+                ", allPhones='" + allPhones + '\'' +
+                ", address='" + address + '\'' +
+                ", email1='" + email1 + '\'' +
+                ", email2='" + email2 + '\'' +
+                ", email3='" + email3 + '\'' +
+                ", allEmails='" + allEmails + '\'' +
                 '}';
     }
 
@@ -91,7 +102,11 @@ public class ContactData {
     }
 
     public File getPhoto(){
-        return new File(photo);
+        if (photo != null) {
+            return new File(photo);
+        } else{
+            return null;
+        }
     }
 
     public String getEmail1() {

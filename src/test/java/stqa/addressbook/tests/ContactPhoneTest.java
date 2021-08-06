@@ -14,8 +14,8 @@ public class ContactPhoneTest extends TestBase{
 
     @BeforeMethod
     private void ensurePreconditions() throws InterruptedException {
-        if (app.contact().all().size() == 0) {
-            ContactData newContact = new ContactData().withName("Alexis").withMiddleName("Middle Name").withGroup("Test 1");
+        if (app.db().contacts().size() == 0) {
+            ContactData newContact = new ContactData().withName("Alexis").withMiddleName("Middle Name");
             app.contact().creation(newContact);
         }
     }
@@ -25,7 +25,7 @@ public class ContactPhoneTest extends TestBase{
         app.goTo().homePage();
         ContactData contact = app.contact().all().iterator().next();
         ContactData contactData = app.contact().infoFromEditForm(contact);
-
+        System.out.println("!!!! " + merge(contactData) + "\n" + contact.getAllPhones());
         assertThat(contact.getAllPhones(), equalTo(merge(contactData)));
 
     }

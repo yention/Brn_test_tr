@@ -9,9 +9,17 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import stqa.addressbook.appmanager.ApplicationManager;
+import stqa.addressbook.model.ContactData;
+import stqa.addressbook.model.Contacts;
+import stqa.addressbook.model.GroupData;
+import stqa.addressbook.model.Groups;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestBase {
 
@@ -45,4 +53,23 @@ public class TestBase {
         logger.info("Stop method " + m.getName());
     }
 
+    public void verifyGroupListInUI() {
+        if (Boolean.getBoolean("verifyUI")) { //In params -DverifyUI=true
+            Groups groupsDB = app.db().groups();
+            Groups groupsUI = app.group().all();
+            assertThat(groupsUI, equalTo(groupsDB.stream()
+                    .map((g) -> new GroupData().withId(g.getId()).withName(g.getName()))
+                    .collect(Collectors.toSet())));
+        }
+    }
+
+    public void verifyContactListInUI() {
+        if (Boolean.getBoolean("verifyUI")) { //In params -DverifyUI=true
+            Contacts groupsDB = app.db().contacts();
+            Contacts groupsUI = app.contact().all();
+            assertThat(groupsUI, equalTo(groupsDB.stream()
+                    .map((g) -> new ContactData().withId(g.getId()).withName(g.getName()))
+                    .collect(Collectors.toSet())));
+        }
+    }
 }

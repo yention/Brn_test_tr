@@ -37,7 +37,12 @@ public class GroupData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GroupData groupData = (GroupData) o;
-        return getId() == groupData.getId() && Objects.equals(getName(), groupData.getName());
+        return getId() == groupData.getId() && Objects.equals(getName(), groupData.getName()) && Objects.equals(getHeader(), groupData.getHeader()) && Objects.equals(getFooter(), groupData.getFooter());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getHeader(), getFooter());
     }
 
     @Override
@@ -47,11 +52,6 @@ public class GroupData {
                 ", header='" + header + '\'' +
                 ", footer='" + footer + '\'' +
                 '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
     }
 
     public String getName() {
