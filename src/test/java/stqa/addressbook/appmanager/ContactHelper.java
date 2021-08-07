@@ -30,6 +30,10 @@ public class ContactHelper extends HelperBase {
         type(cd.getName(), By.name("firstname"));
         type(cd.getMiddleName(), By.name("middlename"));
         type(cd.getLastName(), By.name("lastname"));
+        type(cd.getAddress(), By.name("address"));
+        type(cd.getEmail1(), By.name("email"));
+        type(cd.getEmail2(), By.name("email2"));
+        type(cd.getEmail3(), By.name("email3"));
         attach(cd.getPhoto(), By.name("photo"));
         if (creation) {
             if (cd.getGroups().size() > 0){

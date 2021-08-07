@@ -24,6 +24,7 @@ public class ContactData {
     private String name;
     @Column(name = "middlename")
     private String middleName;
+    @Expose
     @Column(name = "lastname")
     private String lastName;
     @Column(name = "home")
@@ -45,9 +46,11 @@ public class ContactData {
     @Column(name = "email")
     @Type(type = "text")
     private String email1;
+    @Expose
     @Type(type = "text")
     @Column(name = "email2")
     private String email2;
+    @Expose
     @Type(type = "text")
     @Column(name = "email3")
     private String email3;
@@ -68,12 +71,12 @@ public class ContactData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContactData that = (ContactData) o;
-        return Objects.equals(getName(), that.getName()) && Objects.equals(getLastName(), that.getLastName());
+        return getId() == that.getId() && Objects.equals(getName(), that.getName()) && Objects.equals(getLastName(), that.getLastName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getLastName(), getId());
+        return Objects.hash(getId(), getName(), getLastName());
     }
 
     @Override

@@ -25,7 +25,8 @@ public class ContactCreationTests extends TestBase {
 
     @DataProvider
     public Iterator<Object[]> validContactsFromJSON() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File(app.getProperties().getProperty("source.fileGenContactJSON"))))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File(
+                app.getProperties().getProperty("source.fileGenContactJSON"))))) {
             String line = reader.readLine();
             String json = "";
             while (line != null) {
@@ -33,8 +34,8 @@ public class ContactCreationTests extends TestBase {
                 line = reader.readLine();
             }
             Gson gson = new Gson();
-            List<ContactData> contacts = gson.fromJson(json, new TypeToken<List<ContactData>>() {
-            }.getType());
+            List<ContactData> contacts = gson.fromJson(json,
+                    new TypeToken<List<ContactData>>() {}.getType());
             return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
         }
     }
@@ -46,9 +47,11 @@ public class ContactCreationTests extends TestBase {
         contact.withPhoto(photo);
         app.goTo().homePage();
         app.contact().creation(contact);
-        assertThat(app.db().contacts(), equalTo(before.size() + 1));
         Contacts after = app.db().contacts();
-        assertThat(app.db().contacts(), equalTo(before.size() + 1));
+        System.out.println("\n\n\n AFTER:"+after);
+        System.out.println("\n\n\n BEFORE:"+before);
+
+        assertThat(after.size(), equalTo(before.size() + 1));
         assertThat(after, equalTo(
                 before.withAdded(contact.withId(after.stream().mapToInt((c)
                         -> c.getId()).max().getAsInt()))));
@@ -56,7 +59,8 @@ public class ContactCreationTests extends TestBase {
 
 
 
-    @Test(dataProvider = "validContactsFromJSON")
+
+    @Test(dataProvider = "validContactsFromJSON", enabled = false)
     public void testContactCreation(ContactData contact) throws Exception {
         Contacts before = app.contact().all();
         Groups allGroups = app.db().groups();
