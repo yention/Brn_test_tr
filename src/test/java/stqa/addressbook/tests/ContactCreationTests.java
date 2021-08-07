@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import stqa.addressbook.model.ContactData;
 import stqa.addressbook.model.Contacts;
 import stqa.addressbook.model.GroupData;
+import stqa.addressbook.model.Groups;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,10 +41,10 @@ public class ContactCreationTests extends TestBase {
 
     @Test(dataProvider = "validContactsFromJSON")
     public void testContactCreationWithPhoto(ContactData contact) throws Exception {
-        app.goTo().homePage();
         Contacts before = app.db().contacts();
         File photo = new File("/Applications/Projects/Brn_test_tr/files/jesus.jpeg");
         contact.withPhoto(photo);
+        app.goTo().homePage();
         app.contact().creation(contact);
         assertThat(app.db().contacts(), equalTo(before.size() + 1));
         Contacts after = app.db().contacts();
@@ -57,8 +58,10 @@ public class ContactCreationTests extends TestBase {
 
     @Test(dataProvider = "validContactsFromJSON")
     public void testContactCreation(ContactData contact) throws Exception {
-        app.goTo().homePage();
         Contacts before = app.contact().all();
+        Groups allGroups = app.db().groups();
+        contact.inGroups(allGroups.iterator().next());
+        app.goTo().homePage();
         app.contact().creation(contact);
         assertThat(app.contact().count(), equalTo(before.size() + 1));
         Contacts after = app.contact().all();

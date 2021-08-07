@@ -16,8 +16,7 @@ public class ContactModificationTests extends TestBase {
             app.goTo().homePage();
             ContactData newContact = new ContactData().
                     withName("Alex").
-                    withMiddleName("MName").
-                    withGroup("Test1");
+                    withMiddleName("MName");
             app.contact().modification(newContact);
         }
     }

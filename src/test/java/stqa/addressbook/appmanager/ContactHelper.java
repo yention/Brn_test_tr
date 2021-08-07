@@ -32,9 +32,13 @@ public class ContactHelper extends HelperBase {
         type(cd.getLastName(), By.name("lastname"));
         attach(cd.getPhoto(), By.name("photo"));
         if (creation) {
+            if (cd.getGroups().size() > 0){
+                Assert.assertTrue(cd.getGroups().size() == 1);
+                new Select(wd.findElement(By.name("new_group"))).
+                    selectByVisibleText(cd.getGroups().iterator().next().getName());
+            }
             new Select (wd.findElement(By.name("new_group"))).selectByVisibleText(listGroups().iterator().next().getText());
-//            new Select(wd.findElement(By.name("new_group"))).
-//                    selectByVisibleText(cd.getGroup());
+
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
