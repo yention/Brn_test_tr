@@ -49,4 +49,18 @@ public class DbHelper {
         session.close();
         return new Contacts(result);
     }
+
+    public void addContact(){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.createQuery("INSERT INTO addressbook (ID,firstname,lastname,ADDRESS,SALARY)" +
+                "VALUES (2, 'Khilan', 25, 'Delhi', 1500.00 ");
+    }
+
+    public void addGroup(){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+
+    }
 }
