@@ -7,7 +7,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import stqa.addressbook.model.ContactData;
 import stqa.addressbook.model.Contacts;
-import stqa.addressbook.model.GroupData;
 import stqa.addressbook.model.Groups;
 
 import java.io.BufferedReader;
@@ -18,8 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactCreationTests extends TestBase {
 
@@ -35,7 +34,8 @@ public class ContactCreationTests extends TestBase {
             }
             Gson gson = new Gson();
             List<ContactData> contacts = gson.fromJson(json,
-                    new TypeToken<List<ContactData>>() {}.getType());
+                    new TypeToken<List<ContactData>>() {
+                    }.getType());
             return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
         }
     }
@@ -48,17 +48,11 @@ public class ContactCreationTests extends TestBase {
         app.goTo().homePage();
         app.contact().creation(contact);
         Contacts after = app.db().contacts();
-        System.out.println("\n\n\n AFTER:"+after);
-        System.out.println("\n\n\n BEFORE:"+before);
-
         assertThat(after.size(), equalTo(before.size() + 1));
         assertThat(after, equalTo(
                 before.withAdded(contact.withId(after.stream().mapToInt((c)
                         -> c.getId()).max().getAsInt()))));
     }
-
-
-
 
     @Test(dataProvider = "validContactsFromJSON", enabled = false)
     public void testContactCreation(ContactData contact) throws Exception {

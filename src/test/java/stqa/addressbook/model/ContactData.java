@@ -63,7 +63,7 @@ public class ContactData {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private Set<GroupData> groups = new HashSet<>();
+    private Set<GroupData> groups = new HashSet<GroupData>();
 
 
     @Override
@@ -107,10 +107,10 @@ public class ContactData {
         return this;
     }
 
-    public File getPhoto(){
+    public File getPhoto() {
         if (photo != null) {
             return new File(photo);
-        } else{
+        } else {
             return null;
         }
     }
@@ -175,7 +175,7 @@ public class ContactData {
         return lastName;
     }
 
-    public Set<GroupData> getGroups() {
+    public Groups getGroups() {
         return new Groups(groups);
     }
 
