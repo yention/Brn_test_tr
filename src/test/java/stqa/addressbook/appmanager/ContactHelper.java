@@ -176,8 +176,18 @@ public class ContactHelper extends HelperBase {
         wd.findElement(By.partialLinkText("group page")).click();
     }
 
-    private void add() {
+    public void add() {
         wd.findElement(By.name("add")).click();
+    }
+
+    public void filterByGroup(String groupName) {
+        Select groupsDropdown = new Select(wd.findElement(By.name("group")));
+        groupsDropdown.selectByVisibleText(groupName);
+
+    }
+
+    public void checkGroupForContact(int groupId) {
+        new Select(wd.findElement(By.cssSelector("select[name=\"to_group\"]"))).selectByValue("" + groupId +"");
     }
 
     private void selectGroupByIdForAdd(GroupData gr) {
@@ -210,5 +220,9 @@ public class ContactHelper extends HelperBase {
         add();
         goToGoup();
         contactCache = null;
+    }
+
+    public void checkContactById(int id) {
+        wd.findElement(By.cssSelector("input[value='" + id +"']")).click();
     }
 }

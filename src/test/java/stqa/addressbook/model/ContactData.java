@@ -63,7 +63,7 @@ public class ContactData {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private Set<GroupData> groups = new HashSet<GroupData>();
+    public Set<GroupData> groups = new HashSet<GroupData>();
 
 
     @Override
@@ -235,6 +235,16 @@ public class ContactData {
 
     public ContactData inGroups(GroupData next) {
         groups.add(next);
+        return this;
+    }
+
+    public ContactData ifGroups (GroupData group, boolean toAdd) {
+        if (toAdd) {
+            groups.add(group);
+        }
+        else {
+            groups.remove(group);
+        }
         return this;
     }
 }
